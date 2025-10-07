@@ -1,6 +1,11 @@
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+
 export default function Home() {
   return (
-    <div className="h-full w-full bg-black">Hola Mundo
+    <div className="w-full">
+      <Header />
+      <Footer />
     </div>
   );
 }
