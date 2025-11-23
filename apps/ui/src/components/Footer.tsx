@@ -2,13 +2,13 @@ import { MapPin, Phone, Mail, Instagram, Facebook } from "lucide-react"
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground py-12 px-4">
-      <div className="container mx-auto max-w-6xl">
+    <footer className="bg-[#FCF1F3] border-t border-pink-200 py-12 px-4 flex justify-items-center w-full">
+      <div className="container mx-auto max-w-6xl w-[90%]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
             <h3 className="text-2xl font-bold mb-4">Nails Studio</h3>
             <p className="text-primary-foreground/80 leading-relaxed">
-              Tu destino de belleza y cuidado profesional de uñas. Más de 10 años embelleciendo manos.
+              Tu destino de belleza y cuidado profesional de uñas.
             </p>
           </div>
 
@@ -48,7 +48,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/20 pt-8 text-center text-primary-foreground/60">
+        <div className="border-t border-pink-200 pt-8 text-center text-primary-foreground/60">
           <p>&copy; {new Date().getFullYear()} Nails Studio. Todos los derechos reservados.</p>
         </div>
       </div>
