@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 export default function Header() {
   return (
     <div className="flex justify-center items-center h-16 w-full border-b border-pink-200
-                    fixed top-0 left-0 right-0 z-50 bg-pink-700/80 backdrop-blur-md">
+                    fixed top-0 left-0 right-0 z-50  bg-[#FCF1F3]/80 backdrop-blur-md">
       <div className="flex justify-center items-center w-[90%]">
         <div className="flex justify-start items-center group">
           {/* <div className="flex justify-center items-center bg-transparent group-hover:rotate-12 duration-300 transition-transform">
