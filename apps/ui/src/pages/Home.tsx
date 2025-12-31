@@ -9,11 +9,11 @@ export default function Home() {
 
       {/* Título */}
       <div className="flex flex-col items-center mt-28 md:mt-36 w-[90%]">
-        <h1 className="text-4xl sm:text-5xl md:text-7xl text-pink-500 font-bold text-center">
-          Nails by RNeyra
+        <h1 className="text-4xl sm:text-5xl md:text-7xl text-pink-600 font-bold text-center">
+          Salón de Uñas
         </h1>
 
-        <p className="text-base sm:text-lg md:text-xl text-black/60 font-normal text-center max-w-xl my-5">
+        <p className="text-base sm:text-lg md:text-xl text-pink-600/60 font-normal italic text-center max-w-xl mt-3 mb-5">
           Diseños que vibran con vos
         </p>
 
@@ -28,11 +28,11 @@ export default function Home() {
 
       {/* Cómo funciona */}
       <div className="flex flex-col items-center my-16 w-[90%]">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl text-black font-bold text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl text-pink-600 font-bold text-center">
           ¿Cómo funciona nuestra página?
         </h2>
 
-        <p className="text-base sm:text-lg text-black/60 text-center max-w-xl mt-2">
+        <p className="text-base sm:text-lg text-pink-600/60 text-center max-w-xl mt-2">
           Aprendé a reservar turnos con facilidad.
         </p>
 
@@ -102,9 +102,9 @@ function Card({
         <p className="text-white text-sm font-semibold">{step}</p>
       </div>
 
-      <h3 className="text-black text-lg font-semibold">{title}</h3>
+      <h3 className="text-red-800 text-lg font-semibold">{title}</h3>
 
-      <p className="text-black/60 text-sm mt-2">
+      <p className="text-red-800/60 text-sm mt-2">
         {text}
       </p>
     </div>

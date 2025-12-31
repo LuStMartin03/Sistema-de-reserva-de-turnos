@@ -13,8 +13,11 @@ export default function Header() {
                  bg-[#FCF1F3]/80 backdrop-blur-md"
     >
       <div className="flex justify-between items-center w-[90%]">
-        {/* Logo */}
-        <div className="flex items-center">
+        <Link
+          to="/home"
+          className="flex items-center hover:scale-105 transition-transform"
+          onClick={() => setOpen(false)}
+        >
           <div className="relative h-8 w-32">
             <span className="absolute inset-0 flex items-center text-4xl font-black tracking-tighter text-red-800">
               RNEYRA
@@ -23,34 +26,35 @@ export default function Header() {
               nails
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Links desktop */}
         <nav
           className="hidden md:flex justify-center items-center
                      text-md text-red-800"
         >
-          <Link to="" className="mx-5 hover:scale-105 transition-transform">
+          <Link to="/gallery" className="mx-5 hover:scale-105 transition-transform">
             Ver Galería
           </Link>
-          <Link to="" className="mx-8 hover:scale-105 transition-transform">
+          <Link to="/booking" className="mx-8 hover:scale-105 transition-transform">
             Reservar Turno
           </Link>
-          <Link to="" className="mx-5 hover:scale-105 transition-transform">
+          <Link to="/services" className="mx-5 hover:scale-105 transition-transform">
             Ver Servicios
           </Link>
         </nav>
 
         {/* Botón login desktop */}
         <div className="hidden md:flex">
-          <button
+          <Link
+            to="/register"
             className="flex justify-center items-center w-32 h-8 bg-red-800 rounded-2xl
                        hover:scale-105 transition-transform"
           >
             <span className="text-pink-100 font-semibold">
               Iniciar Sesión
             </span>
-          </button>
+          </Link>
         </div>
 
         {/* Botón menú mobile */}
@@ -68,40 +72,42 @@ export default function Header() {
           className="absolute top-16 left-0 w-full
                      bg-[#FCF1F3] border-b border-pink-200
                      flex flex-col items-center
-                     text-red-800 md:hidden"
+                     text-red-800 md:hidden p-2"
         >
+          {/* Home mobile */}
           <Link
-            to=""
+            to="/gallery"
             onClick={() => setOpen(false)}
-            className="py-3 hover:font-semibold"
+            className="py-2 hover:font-semibold"
           >
             Ver Galería
           </Link>
 
           <Link
-            to=""
+            to="/booking"
             onClick={() => setOpen(false)}
-            className="py-3 hover:font-semibold"
+            className="py-2 hover:font-semibold"
           >
             Reservar Turno
           </Link>
 
           <Link
-            to=""
+            to="/services"
             onClick={() => setOpen(false)}
-            className="py-3 hover:font-semibold"
+            className="py-2 hover:font-semibold"
           >
             Ver Servicios
           </Link>
 
-          <button
-            className="my-4 w-40 h-9 bg-red-800 rounded-2xl
+          <Link
+            to="/register"
+            className="flex justify-center items-center my-4 w-40 h-9 bg-red-800 rounded-2xl
                        hover:scale-105 transition-transform"
           >
             <span className="text-pink-100 font-semibold">
               Iniciar Sesión
             </span>
-          </button>
+          </Link>
         </div>
       )}
     </header>
