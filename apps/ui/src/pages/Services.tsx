@@ -2,7 +2,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { Clock, MessageCircleWarning, Brush, Droplet } from "lucide-react";
 
-export default function Home() {
+export default function Services() {
   return (
     <div className="flex flex-col items-center w-full bg-[#FCF1F3]">
       <Header />
