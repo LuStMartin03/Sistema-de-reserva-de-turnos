@@ -28,7 +28,7 @@ export default function Footer() {
 
             <div
               className="flex flex-col gap-4
-                         sm:flex-row sm:justify-between"
+                         sm:flex-row sm:justify-start"
             >
               <div className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0 text-red-800" />
@@ -40,10 +40,10 @@ export default function Footer() {
                 <span className="text-red-600/80">+54 11 1234-5678</span>
               </div> */}
 
-              <div className="flex items-center gap-2">
+              <a href="https://www.instagram.com/nailsbyrneyra/" className="flex items-center gap-2">
                 <Instagram className="w-5 h-5 flex-shrink-0 text-red-800" />
                 <span className="text-red-600/80">@nailsbyrneyra</span>
-              </div>
+              </a>
             </div>
           </div>
         </div>

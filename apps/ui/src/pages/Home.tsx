@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { LogIn, Eye, Calendar, Sparkles } from "lucide-react";
@@ -17,13 +18,13 @@ export default function Home() {
           Diseños que vibran con vos
         </p>
 
-        <button
+        <Link to="/booking"
           className="flex justify-center items-center w-40 h-10 bg-red-800 rounded-full
                      hover:scale-105 transition-transform
                      text-white font-semibold"
         >
           Reservar Turno
-        </button>
+        </Link>
       </div>
 
       {/* Cómo funciona */}

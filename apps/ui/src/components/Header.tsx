@@ -33,8 +33,8 @@ export default function Header() {
           className="hidden md:flex justify-center items-center
                      text-md text-red-800"
         >
-          <Link to="/gallery" className="mx-5 hover:scale-105 transition-transform">
-            Ver Galería
+          <Link to="/aboutus" className="mx-5 hover:scale-105 transition-transform">
+            Sobre Nosotros
           </Link>
           <Link to="/booking" className="mx-8 hover:scale-105 transition-transform">
             Reservar Turno
@@ -76,11 +76,11 @@ export default function Header() {
         >
           {/* Home mobile */}
           <Link
-            to="/gallery"
+            to="/aboutus"
             onClick={() => setOpen(false)}
             className="py-2 hover:font-semibold"
           >
-            Ver Galería
+            Sobre Nosotros
           </Link>
 
           <Link
