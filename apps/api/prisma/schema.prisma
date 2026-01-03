@@ -12,18 +12,25 @@ enum Role {
   ADMIN
 }
 
+enum AppointmentStatus {
+  ACTIVE
+  CANCELLED
+}
+
 model User {
   id        String   @id @default(uuid())
   fullName  String
   email     String   @unique
   password  String
   role      Role     @default(CLIENT)
+  isActive  Boolean  @default(true)
 
   appointments Appointment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
 model Service {
   id          String   @id @default(uuid())
@@ -38,16 +45,28 @@ model Service {
   updatedAt DateTime @updatedAt
 }
 
-model Appointment {
+model TimeSlot {
   id        String   @id @default(uuid())
-  date      DateTime
-  status    String   @default("ACTIVE")
-
-  userId    String
-  serviceId String
-
-  user      User     @relation(fields: [userId], references: [id])
-  service   Service  @relation(fields: [serviceId], references: [id])
-
+  time      String   // "08:00", "10:00"
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
+
+  appointments Appointment[]
 }
+
+model Appointment {
+  id         String   @id @default(uuid())
+  date       DateTime
+  status     AppointmentStatus @default(ACTIVE)
+
+  userId     String
+  serviceId  String
+  timeSlotId String
+
+  user       User     @relation(fields: [userId], references: [id])
+  service    Service  @relation(fields: [serviceId], references: [id])
+  timeSlot   TimeSlot @relation(fields: [timeSlotId], references: [id])
+
+  createdAt  DateTime @default(now())
+}
+

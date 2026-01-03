@@ -33,8 +33,6 @@ export class ServiceController {
   static async update(req: Request, res: Response) {
     const { id } = req.params;
 
-    console.log("BODY:", req.body);
-
     const service = await ServiceService.update(id, req.body);
 
     res.json(service);

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "types": ["node"],
     "moduleResolution": "node",
     "target": "ES2020",
@@ -13,5 +14,6 @@
   "exclude": [
     "prisma",
     "prisma.config.ts"
-  ]
+  ],
+  "include": ["src"]
 }
