@@ -2,9 +2,10 @@
 
 ## Backend Endpoints:
 
-Entidades: Cliente, Servicio, Turno
+Entidades: Cliente, Servicio, Turno, Horario
 
 ### Cliente:
+
 - Registrarse: **POST auth/register**
     ```json
         {
@@ -22,8 +23,10 @@ Entidades: Cliente, Servicio, Turno
         }
     ```
 
+- Eliminar usuario: **DELETE /users/:id**
 
-### Servicios:
+### Servicio:
+
 - Obtener servicios: **GET services/**
 
 - Obtener servicio por id: **GET services/:id**
@@ -49,7 +52,7 @@ Entidades: Cliente, Servicio, Turno
 
 - Eliminar servicio (ADMIN): **DELETE services/:id**
 
-### Turnos:
+### Turno:
 
 - Obtener todos los turnos (ADMIN): **GET appointments/**
 
@@ -63,7 +66,16 @@ Entidades: Cliente, Servicio, Turno
     ```
 - Obtener mis turnos (CLIENT): **GET appointments/me**
 
-### Horarios:
+
+// esto esta como el orto
+- Cancelar mi turno (CLIENT | ADMIN): **PATCH /appointments/a1f8090d-bf81-43a8-83a1-9f5b561fff4f/cancel** 
+{
+  "serviceId": "1815a5f3-5294-423c-8d04-d5d77006045f",
+  "date": "2026-01-04T15:30:00"
+}
+
+### Horario:
+
 - Crear horario (ADMIN): **POST /time-slots/**
     ```json
         {

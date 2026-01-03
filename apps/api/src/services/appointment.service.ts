@@ -1,4 +1,6 @@
+import app from "../app";
 import { prisma } from "../lib/prisma";
+import { sendMail } from "../utils/mailer";
 
 
 export class AppointmentService {
@@ -60,19 +62,26 @@ export class AppointmentService {
     }
 
     // Crear turno
-    return prisma.appointment.create({
+    const appointment = await prisma.appointment.create({
     data: {
-        userId,
-        serviceId,
-        timeSlotId,
-        date: appointmentDay,
-    },
-    include: {
+          userId,
+          serviceId,
+          timeSlotId,
+          date: appointmentDay,
+        },
+      include: {
         service: true,
-        timeSlot: true,
-    },
+        user: true,
+      },
     });
 
+  await sendMail(
+    appointment.user.email,
+    "Turno confirmado",
+    `Tu turno para ${appointment.service.name} fue registrado correctamente`
+  );
+
+  return appointment;
   }
 
   static getMine(userId: string) {
@@ -105,8 +114,13 @@ static async cancel(
   user: { id: string; role: string }
 ) {
   const appointment = await prisma.appointment.findUnique({
-    where: { id: appointmentId },
-  });
+  where: { id: appointmentId },
+  include: {
+    user: true,
+    service: true,
+  },
+});
+
 
   if (!appointment) {
     throw new Error("Appointment not found");
@@ -126,8 +140,13 @@ static async cancel(
   if (user.role !== "ADMIN" && appointment.userId !== user.id) {
     throw new Error("You cannot cancel this appointment");
   }
+  await sendMail(
+    appointment.user.email,
+    "Turno cancelado",
+    "Tu turno fue cancelado correctamente"
+  );
 
-  return prisma.appointment.update({
+  await prisma.appointment.update({
     where: { id: appointmentId },
     data: {
       status: "CANCELLED",
@@ -136,6 +155,7 @@ static async cancel(
       service: true,
     },
   });
+  return appointment
 }
 
 }
