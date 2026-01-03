@@ -42,7 +42,7 @@ export class ServiceService {
   static delete(id: string) {
     return prisma.service.update({
       where: { id },
-      data: { isActive: false }, // soft delete
+      data: { isActive: false },
     });
   }
 }

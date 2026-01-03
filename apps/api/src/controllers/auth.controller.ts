@@ -16,6 +16,7 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       const data = await AuthService.login(email, password);
+      console.log("JWT_SECRET LOGIN:", process.env.JWT_SECRET);
       res.json(data);
     } catch (error: any) {
       res.status(401).json({ message: error.message });
