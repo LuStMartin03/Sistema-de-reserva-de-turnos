@@ -15,7 +15,7 @@ function endOfDay(date: Date) {
 }
 
 export function startReminderJob() {
-  cron.schedule("*/1 * * * *", async () => {
+  cron.schedule("0 * * * *", async () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
