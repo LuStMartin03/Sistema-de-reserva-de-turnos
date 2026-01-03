@@ -61,6 +61,19 @@ export class AppointmentService {
         throw new Error("This time slot is already booked");
     }
 
+    // 🔒 Verificar si el usuario ya tiene un turno activo
+    const activeAppointment = await prisma.appointment.findFirst({
+      where: {
+        userId,
+        status: "ACTIVE",
+      },
+    });
+
+    if (activeAppointment) {
+      throw new Error("You already have an active appointment");
+    }
+
+
     // Crear turno
     const appointment = await prisma.appointment.create({
     data: {

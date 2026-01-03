@@ -1,8 +1,13 @@
 # proyecto-personal
 
+### Autenticación
+
+Todos los endpoints protegidos requieren el header:
+- Authorization: Bearer <JWT_TOKEN>
+
 ## Backend Endpoints:
 
-Entidades: Cliente, Servicio, Turno, Horario
+- Entidades: Cliente, Servicio, Turno, Horario
 
 ### Cliente:
 
@@ -66,13 +71,7 @@ Entidades: Cliente, Servicio, Turno, Horario
     ```
 - Obtener mis turnos (CLIENT): **GET appointments/me**
 
-
-// esto esta como el orto
-- Cancelar mi turno (CLIENT | ADMIN): **PATCH /appointments/a1f8090d-bf81-43a8-83a1-9f5b561fff4f/cancel** 
-{
-  "serviceId": "1815a5f3-5294-423c-8d04-d5d77006045f",
-  "date": "2026-01-04T15:30:00"
-}
+- Cancelar mi turno (CLIENT | ADMIN): **PATCH /appointments/a1f8090d-bf81-43a8-83a1-9f5b561fff4f/cancel**
 
 ### Horario:
 

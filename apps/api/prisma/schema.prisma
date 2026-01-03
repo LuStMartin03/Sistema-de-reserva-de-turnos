@@ -7,6 +7,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id           String        @id @default(uuid())
+  fullName     String
+  email        String        @unique
+  password     String
+  createdAt    DateTime      @default(now())
+  role         Role          @default(CLIENT)
+  updatedAt    DateTime      @updatedAt
+  isActive     Boolean       @default(true)
+  appointments Appointment[]
+}
+
+model Service {
+  id           String        @id @default(uuid())
+  name         String
+  price        Int
+  createdAt    DateTime      @default(now())
+  durationMin  Int
+  isActive     Boolean       @default(true)
+  updatedAt    DateTime      @updatedAt
+  appointments Appointment[]
+}
+
+model TimeSlot {
+  id           String        @id @default(uuid())
+  time         String
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  appointments Appointment[]
+}
+
+model Appointment {
+  id           String            @id @default(uuid())
+  date         DateTime
+  userId       String
+  serviceId    String
+  createdAt    DateTime          @default(now())
+  timeSlotId   String
+  status       AppointmentStatus @default(ACTIVE)
+  reminderSent Boolean           @default(false)
+  service      Service           @relation(fields: [serviceId], references: [id])
+  timeSlot     TimeSlot          @relation(fields: [timeSlotId], references: [id])
+  user         User              @relation(fields: [userId], references: [id])
+}
+
 enum Role {
   CLIENT
   ADMIN
@@ -16,57 +61,3 @@ enum AppointmentStatus {
   ACTIVE
   CANCELLED
 }
-
-model User {
-  id        String   @id @default(uuid())
-  fullName  String
-  email     String   @unique
-  password  String
-  role      Role     @default(CLIENT)
-  isActive  Boolean  @default(true)
-
-  appointments Appointment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-
-model Service {
-  id          String   @id @default(uuid())
-  name        String
-  price       Int
-  durationMin Int
-  isActive    Boolean  @default(true)
-
-  appointments Appointment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model TimeSlot {
-  id        String   @id @default(uuid())
-  time      String   // "08:00", "10:00"
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-
-  appointments Appointment[]
-}
-
-model Appointment {
-  id         String   @id @default(uuid())
-  date       DateTime
-  status     AppointmentStatus @default(ACTIVE)
-
-  userId     String
-  serviceId  String
-  timeSlotId String
-
-  user       User     @relation(fields: [userId], references: [id])
-  service    Service  @relation(fields: [serviceId], references: [id])
-  timeSlot   TimeSlot @relation(fields: [timeSlotId], references: [id])
-
-  createdAt  DateTime @default(now())
-}
-
