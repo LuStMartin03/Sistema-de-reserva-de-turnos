@@ -6,6 +6,7 @@ import timeSlotRoutes from "./routes/timeSlot.routes";
 import serviceRoutes from "./routes/service.routes";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -20,3 +21,4 @@ app.use("/time-slots", timeSlotRoutes);
 app.use("/appointments", appointmentRoutes);
 
 export default app;
+app.use(errorHandler);

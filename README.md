@@ -28,7 +28,10 @@ Todos los endpoints protegidos requieren el header:
         }
     ```
 
-- Eliminar usuario: **DELETE /users/:id**
+- Eliminar usuario (CLIENT | ADMIN): **DELETE /users/:id**
+
+- Ver perfil (CLIENT): **GET /users/me**
+- Editar perfil (CLIENT): **PUT /users/me**
 
 ### Servicio:
 
@@ -72,6 +75,9 @@ Todos los endpoints protegidos requieren el header:
 - Obtener mis turnos (CLIENT): **GET appointments/me**
 
 - Cancelar mi turno (CLIENT | ADMIN): **PATCH /appointments/a1f8090d-bf81-43a8-83a1-9f5b561fff4f/cancel**
+
+- Próximo turno: **GET /appointments/me?future=true**
+- Turnos pasados: **GET /appointments/me?past=true**
 
 ### Horario:
 

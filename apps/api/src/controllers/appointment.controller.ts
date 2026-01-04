@@ -58,3 +58,21 @@ export async function cancel(req: Request, res: Response) {
     });
   }
 }
+
+export async function getMyAppointments(req: Request, res: Response) {
+  const { future, past } = req.query;
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const appointments = await AppointmentService.getMyAppointments(
+    req.user.id,
+    {
+      future: future === "true",
+      past: past === "true",
+    }
+  );
+
+  res.json(appointments);
+}
