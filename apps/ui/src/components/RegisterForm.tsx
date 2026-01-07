@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Mail, Lock, UserIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const [fullName, setFullName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -19,14 +20,7 @@ export default function Register() {
     setError(null);
 
     try {
-      const res = await api.post("/auth/register", {
-        fullName,
-        email: registerEmail,
-        password: registerPassword,
-      });
-
-      console.log("Register OK", res.data);
-
+      await register(fullName, registerEmail, registerPassword);
       // 👉 si todo salió bien, redirige a home
       navigate("/home");
     } catch (err: any) {

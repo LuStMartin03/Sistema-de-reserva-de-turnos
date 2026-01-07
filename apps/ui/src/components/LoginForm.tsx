@@ -9,6 +9,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,10 +20,18 @@ export default function Login() {
 
     try {
       await login(email, password);
+
+      // ✅ login OK → redirigir
       navigate("/home");
     } catch (err: any) {
-      console.error(err);
-      setError("Email o contraseña incorrectos");
+      console.error("Error login", err);
+
+      // mismo criterio que register
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("Email o contraseña incorrectos");
+      }
     } finally {
       setLoading(false);
     }
@@ -54,15 +63,18 @@ export default function Login() {
         />
       </div>
 
+      {/* 🔴 error */}
       {error && (
-        <p className="text-red-500 text-sm text-center">{error}</p>
+        <p className="text-sm text-red-500 text-center">{error}</p>
       )}
 
       <button
         type="submit"
         disabled={loading}
-        className={`w-full py-3 rounded-xl text-white ${
-          loading ? "bg-pink-400" : "bg-pink-600 hover:bg-pink-700"
+        className={`w-full py-3 rounded-xl text-white transition ${
+          loading
+            ? "bg-pink-400 cursor-not-allowed"
+            : "bg-pink-600 hover:bg-pink-700"
         }`}
       >
         {loading ? "Ingresando..." : "Iniciar sesión"}

@@ -1,9 +1,11 @@
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, UserCircle2Icon } from "lucide-react";
 import { useState } from "react";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <header
@@ -45,19 +47,29 @@ export default function Header() {
         </nav>
 
         {/* Botón login desktop */}
-        <div className="hidden md:flex">
-          <Link
-            to="/register"
-            className="flex justify-center items-center w-32 h-8 bg-red-800 rounded-2xl
-                       hover:scale-105 transition-transform"
+        {user ? (
+          <div className="hidden md:flex">
+            <Link
+              to="/profile"
+              className="flex justify-center items-center"
+            >
+              <UserCircle2Icon className="w-9 h-9 text-red-800 hover:scale-105 transition-transform" strokeWidth={1}/>
+            </Link>
+          </div>
+        ) : (
+          <div className="hidden md:flex">
+            <Link
+              to="/register"
+              className="flex justify-center items-center w-32 h-8 bg-red-800 rounded-2xl
+                         hover:scale-105 transition-transform"
           >
             <span className="text-pink-100 font-semibold">
               Iniciar Sesión
             </span>
           </Link>
         </div>
+        )}
 
-        {/* Botón menú mobile */}
         <button
           className="md:hidden text-red-800"
           onClick={() => setOpen(!open)}
@@ -99,15 +111,24 @@ export default function Header() {
             Ver Servicios
           </Link>
 
-          <Link
-            to="/register"
-            className="flex justify-center items-center my-4 w-40 h-9 bg-red-800 rounded-2xl
-                       hover:scale-105 transition-transform"
-          >
+          {user ? (
+            <Link
+              to="/profile"
+              className="flex justify-center items-center"
+            >
+              <UserCircle2Icon className="w-9 h-9 text-red-800 hover:scale-105 transition-transform" strokeWidth={1}/>
+            </Link>
+          ) : (
+            <Link
+              to="/register"
+              className="flex justify-center items-center my-4 w-40 h-9 bg-red-800 rounded-2xl
+                         hover:scale-105 transition-transform"
+            >
             <span className="text-pink-100 font-semibold">
               Iniciar Sesión
             </span>
           </Link>
+          )}
         </div>
       )}
     </header>
