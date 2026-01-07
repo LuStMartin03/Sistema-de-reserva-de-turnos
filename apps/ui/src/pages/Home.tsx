@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { useAuth } from "../context/AuthContext";
 import { LogIn, Eye, Calendar, Sparkles } from "lucide-react";
 
 export default function Home() {
+  const { user } = useAuth();
+
   return (
     <div className="flex flex-col items-center w-full bg-[#FCF1F3]">
       <Header />
@@ -15,10 +18,11 @@ export default function Home() {
         </h1>
 
         <p className="text-base sm:text-lg md:text-xl text-pink-600/60 font-normal italic text-center max-w-xl mt-3 mb-5">
-          Diseños que vibran con vos
+          Para reservar un turno debe estar logueado.
         </p>
 
-        <Link to="/booking"
+        <Link
+          to={user ? "/booking" : "/register"}
           className="flex justify-center items-center w-40 h-10 bg-red-800 rounded-full
                      hover:scale-105 transition-transform
                      text-white font-semibold"

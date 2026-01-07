@@ -38,7 +38,7 @@ export default function Header() {
           <Link to="/aboutus" className="mx-5 hover:scale-105 transition-transform">
             Sobre Nosotros
           </Link>
-          <Link to="/booking" className="mx-8 hover:scale-105 transition-transform">
+          <Link to={user ? "/booking" : "/register"} className="mx-8 hover:scale-105 transition-transform">
             Reservar Turno
           </Link>
           <Link to="/services" className="mx-5 hover:scale-105 transition-transform">
@@ -96,7 +96,7 @@ export default function Header() {
           </Link>
 
           <Link
-            to="/booking"
+            to={user ? "/booking" : "/register"} 
             onClick={() => setOpen(false)}
             className="py-2 hover:font-semibold"
           >
