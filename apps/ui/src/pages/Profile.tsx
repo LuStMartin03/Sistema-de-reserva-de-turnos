@@ -1,55 +1,24 @@
+import { Trash2, CalendarX, CalendarCheck, CalendarHeart, Clock, Brush, Mail, Pencil, User} from "lucide-react";
+import { useUser } from "../context/UserContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Trash2, CalendarX, CalendarCheck } from "lucide-react";
-import { useState } from "react";
-
-type Booking = {
-  id: number;
-  date: string;
-  time: string;
-  service: string;
-  price?: string;
-};
 
 export default function Profile() {
-  // Usuario mock
-  const user = {
-    name: "Lucía Saint Martin",
-    email: "lucia@email.com",
-  };
+  const { profile, futureBooking, pastBookings, cancelBooking, deleteAccount,} = useUser();
 
-  // Turno futuro mock
-  const [futureBooking, setFutureBooking] = useState<Booking | null>({
-    id: 1,
-    date: "2026-02-10",
-    time: "15:30",
-    service: "Soft Gel",
-    price: "$ 20.000"
-  });
-
-  // Turnos anteriores mock
-  const pastBookings: Booking[] = [
-    {
-      id: 2,
-      date: "2025-12-05",
-      time: "14:00",
-      service: "Semi Permanente",
-    },
-    {
-      id: 3,
-      date: "2025-10-20",
-      time: "16:30",
-      service: "Kapping",
-    },
-  ];
-
-  function cancelBooking() {
-    setFutureBooking(null);
+  async function handleDelete() {
+    if (confirm("¿Seguro que querés eliminar tu cuenta?")) {
+      await deleteAccount();
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
   }
+  function splitDateTime(date: string) {
+  if (!date) return "";
+  return date.split("T")[0];
+}
 
-  function deleteAccount() {
-    alert("Cuenta eliminada (mock)");
-  }
+
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FCF1F3]">
@@ -65,21 +34,34 @@ export default function Profile() {
             </h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              {/* Nombre */}
               <div>
                 <p className="text-xs text-red-800/60">Nombre completo</p>
-                <div className="mt-1 px-4 py-2 rounded-xl bg-pink-100/50 text-red-800">
-                  {user.name}
+                <div className="mt-1 flex items-center justify-between px-4 py-2 rounded-xl bg-pink-100/50 text-red-800">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-pink-500" />
+                    <span>{profile?.fullName}</span>
+                  </div>
+                  <Pencil className="w-4 h-4 text-pink-500 cursor-pointer hover:text-pink-700 transition" />
                 </div>
               </div>
 
+              {/* Email */}
               <div>
                 <p className="text-xs text-red-800/60">Email</p>
-                <div className="mt-1 px-4 py-2 rounded-xl bg-pink-100/50 text-red-800">
-                  {user.email}
+                <div className="mt-1 flex items-center justify-between px-4 py-2 rounded-xl bg-pink-100/50 text-red-800">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-pink-500" />
+                    <span>{profile?.email}</span>
+                  </div>
+                  <Pencil className="w-4 h-4 text-pink-500 cursor-pointer hover:text-pink-700 transition" />
                 </div>
               </div>
+
             </div>
           </section>
+
 
           {/* TURNO FUTURO */}
           <section className="bg-white border border-pink-200 rounded-3xl p-6 sm:p-10 shadow-sm">
@@ -90,23 +72,34 @@ export default function Profile() {
 
             {futureBooking ? (
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-pink-50 border border-pink-200 rounded-2xl p-4">
-                <div className="text-sm text-pink-800">
-                  <p><strong>Día:</strong> {futureBooking.date}</p>
-                  <p><strong>Hora:</strong> {futureBooking.time}</p>
-                  <p><strong>Servicio:</strong> {futureBooking.service}</p>
-                  <p><strong>Precio Aproximado:</strong> {futureBooking.price}</p>
+                <div className="text-sm text-pink-800 font-semibold">
+                  <div className="flex flex-row items-center justify-start mb-2">
+                    <CalendarHeart className="w-5 h-5 mr-2" strokeWidth={1}/>
+                    <p> {splitDateTime(futureBooking.date)} </p>
+                  </div>
+                  <div className="flex flex-row items-center justify-start mb-2">
+                    <Clock className="w-5 h-5 mr-2" strokeWidth={1}/>
+                    <p> {futureBooking.timeSlot?.time} </p>
+                  </div>
+                  <div className="flex flex-row items-center justify-start mb-2">
+                    <Brush className="w-5 h-5 mr-2" strokeWidth={1}/>
+                    <p> {futureBooking.service?.name ?? "No disponible"} </p>
+                  </div>
+                  <div className="flex flex-row items-center justify-start mb-2">
+                    <p className="ml-1 mr-3 font-thin text-lg"> $ </p>
+                    <p> {futureBooking.service?.price ?? "No disponible"} </p>
+                  </div>
                 </div>
 
                 <button
-                  onClick={cancelBooking}
-                  className="flex items-center justify-center gap-2 text-sm text-red-600 border border-red-300 px-4 py-2 rounded-xl hover:bg-red-50 transition"
+                  onClick={() => cancelBooking(futureBooking?.id)}
+                  className="flex items-center justify-center gap-2 text-sm text-pink-100 bg-red-800 px-4 py-2 rounded-xl hover:bg-red-900 transition"
                 >
-                  <CalendarX className="w-4 h-4" />
                   Cancelar turno
                 </button>
               </div>
             ) : (
-              <p className="text-sm text-red-800/60">
+              <p className="ml-5 text-sm text-red-800/60 italic">
                 No tenés turnos futuros.
               </p>
             )}
@@ -114,7 +107,8 @@ export default function Profile() {
 
           {/* TURNOS ANTERIORES */}
           <section className="bg-white border border-pink-200 rounded-3xl p-6 sm:p-10 shadow-sm">
-            <h2 className="text-xl font-semibold text-pink-600 mb-4">
+            <h2 className="text-xl font-semibold text-pink-600 mb-4 flex items-center gap-2">
+              <CalendarX className="w-5 h-5" />
               Turnos anteriores
             </h2>
 
@@ -125,13 +119,13 @@ export default function Profile() {
                     key={booking.id}
                     className="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-pink-50 border border-pink-200 rounded-2xl p-4 text-sm text-pink-800"
                   >
-                    <p>{booking.date} — {booking.time}</p>
-                    <p className="font-medium">{booking.service}</p>
+                    <p>{splitDateTime(booking.date)} — {booking.timeSlot?.time}</p>
+                    <p className="font-medium">{booking.service.name}</p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-red-800/60">
+              <p className="ml-5 text-sm text-red-800/60 italic">
                 Todavía no realizaste ningún turno.
               </p>
             )}

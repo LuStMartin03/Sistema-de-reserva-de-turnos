@@ -1,3 +1,4 @@
+import { UserProvider } from './context/UserContext';
 import { Routes, Route } from 'react-router-dom';
 import Register from './pages/AuthPage';
 import Services from './pages/Services';
@@ -15,7 +16,7 @@ export default function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/booking" element={<Booking />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<UserProvider><Profile /></UserProvider>} />
           <Route path="/home" element={<Home />} />
       </Routes>
     );

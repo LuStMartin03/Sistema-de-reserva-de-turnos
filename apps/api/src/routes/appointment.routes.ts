@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
-import { create, getMine, getAll, cancel } from "../controllers/appointment.controller";
+import { create, getMyAppointments, getAll, cancel } from "../controllers/appointment.controller";
 import { requireRole } from "../middlewares/requireRole.middleware";
 
 const router = Router();
 
 router.post("/", authMiddleware, create);
 
-router.get("/me", authMiddleware, getMine);
+router.get("/me", authMiddleware, getMyAppointments);
 
 router.get("/", authMiddleware, requireRole("ADMIN"), getAll);
 

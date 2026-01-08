@@ -18,22 +18,16 @@ export class AppointmentService {
   }) {
     const { userId, serviceId, timeSlotId, date } = data;
 
-    const now = new Date();
-
-    // ❌ Turno en el pasado
-    if (date <= now) {
-      throw new BadRequestError("Appointment cannot be in the past");
-    }
-
-    // ❌ Turno para hoy
+    // 🗓 Normalizar fecha (SOLO día, sin hora)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const appointmentDay = new Date(date);
     appointmentDay.setHours(0, 0, 0, 0);
 
-    if (appointmentDay.getTime() === today.getTime()) {
-      throw new BadRequestError("Appointment cannot be today");
+    // ❌ No pasado ni hoy
+    if (appointmentDay <= today) {
+      throw new BadRequestError("Appointment must be in the future");
     }
 
     try {
@@ -42,21 +36,21 @@ export class AppointmentService {
         where: { id: serviceId },
       });
 
-      if (!service) {
+      if (!service || !service.isActive) {
         throw new NotFoundError("Service not found");
       }
 
       // 🔍 Horario válido y activo
-      const slot = await prisma.timeSlot.findUnique({
+      const timeSlot = await prisma.timeSlot.findUnique({
         where: { id: timeSlotId },
       });
 
-      if (!slot || !slot.isActive) {
-        throw new BadRequestError("Horario no disponible");
+      if (!timeSlot || !timeSlot.isActive) {
+        throw new BadRequestError("Time slot not available");
       }
 
-      // 🔒 Horario ya ocupado
-      const exists = await prisma.appointment.findFirst({
+      // 🔒 Horario ya ocupado ese día
+      const slotTaken = await prisma.appointment.findFirst({
         where: {
           date: appointmentDay,
           timeSlotId,
@@ -64,7 +58,7 @@ export class AppointmentService {
         },
       });
 
-      if (exists) {
+      if (slotTaken) {
         throw new ConflictError("This time slot is already booked");
       }
 
@@ -80,17 +74,38 @@ export class AppointmentService {
         throw new ConflictError("You already have an active appointment");
       }
 
-      // ✅ Crear turno
+      // ✅ CREAR TURNO
       const appointment = await prisma.appointment.create({
         data: {
           userId,
           serviceId,
           timeSlotId,
           date: appointmentDay,
+          status: "ACTIVE",
         },
-        include: {
-          service: true,
-          user: true,
+        select: {
+          id: true,
+          date: true,
+          status: true,
+          service: {
+            select: {
+              id: true,
+              name: true,
+              price: true,
+              durationMin: true,
+            },
+          },
+          timeSlot: {
+            select: {
+              id: true,
+              time: true,
+            },
+          },
+          user: {
+            select: {
+              email: true,
+            },
+          },
         },
       });
 
@@ -105,12 +120,16 @@ export class AppointmentService {
         throw new InternalServerError("Failed to send confirmation email");
       }
 
-      return appointment;
+      // 🔥 No devolver email al front
+      const { user, ...response } = appointment;
+
+      return response;
     } catch (error) {
       if (error instanceof Error) throw error;
       throw new InternalServerError("Failed to create appointment");
     }
   }
+
 
   static async getMine(userId: string) {
     try {
@@ -203,30 +222,49 @@ export class AppointmentService {
     userId: string,
     filters: { future?: boolean; past?: boolean }
   ) {
-    const now = new Date();
-    let dateFilter = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    if (filters.future) dateFilter = { gt: now };
-    if (filters.past) dateFilter = { lt: now };
+    let whereCondition: any = { userId };
 
-    try {
-      return await prisma.appointment.findMany({
-        where: {
-          userId,
-          ...(filters.future || filters.past ? { date: dateFilter } : {}),
-        },
-        orderBy: { date: "asc" },
-        include: {
-          service: {
-            select: {
-              name: true,
-              price: true,
-            },
+    if (filters.future) {
+      whereCondition = {
+        userId,
+        status: "ACTIVE",
+        date: { gt: today },
+      };
+    }
+
+    if (filters.past) {
+      whereCondition = {
+        userId,
+        OR: [
+          { date: { lt: today } },
+          { status: "CANCELLED" },
+        ],
+      };
+    }
+
+    return prisma.appointment.findMany({
+      where: whereCondition,
+      orderBy: { date: "asc" },
+      select: {
+        id: true,
+        date: true,
+        status: true,
+        service: {
+          select: {
+            name: true,
+            price: true,
+            durationMin: true,
           },
         },
-      });
-    } catch {
-      throw new InternalServerError("Failed to fetch user appointments");
-    }
+        timeSlot: {
+          select: {
+            time: true,
+          },
+        },
+      },
+    });
   }
 }

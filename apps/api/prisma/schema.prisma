@@ -40,16 +40,20 @@ model TimeSlot {
 
 model Appointment {
   id           String            @id @default(uuid())
-  date         DateTime
+  date         DateTime          @db.Date
+
   userId       String
-  serviceId    String
-  createdAt    DateTime          @default(now())
+  user         User              @relation(fields: [userId], references: [id])
+
   timeSlotId   String
+  timeSlot     TimeSlot           @relation(fields: [timeSlotId], references: [id])
+
+  serviceId    String
+  service      Service           @relation(fields: [serviceId], references: [id])
+
   status       AppointmentStatus @default(ACTIVE)
   reminderSent Boolean           @default(false)
-  service      Service           @relation(fields: [serviceId], references: [id])
-  timeSlot     TimeSlot          @relation(fields: [timeSlotId], references: [id])
-  user         User              @relation(fields: [userId], references: [id])
+  createdAt    DateTime          @default(now())
 }
 
 enum Role {
