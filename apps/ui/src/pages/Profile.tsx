@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function Profile() {
-  const { profile, futureBooking, pastBookings, cancelBooking, deleteAccount,} = useUser();
+  const { profile, futureBooking, pastBookings, cancelBooking, deleteAccount} = useUser();
 
   async function handleDelete() {
     if (confirm("¿Seguro que querés eliminar tu cuenta?")) {
